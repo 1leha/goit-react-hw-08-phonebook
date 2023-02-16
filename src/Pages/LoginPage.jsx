@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import { messages } from 'components/settings/settings';
 import { PageContainer } from 'components/common/PageContainer';
 
-const RegisterPage = () => {
+const LoginPage = () => {
   const {
     register,
     handleSubmit,
@@ -20,10 +20,6 @@ const RegisterPage = () => {
     console.log(data);
     reset();
   };
-  // const handelSubmit = e => {
-  //   e.preventDefault();
-  //   console.log('submit');
-  // };
 
   return (
     <PageContainer>
@@ -31,32 +27,14 @@ const RegisterPage = () => {
         as="form"
         autoComplete="on"
         minWidth="320px"
+        // maxWidth="1000px"
+        // width="600px"
         display="flex"
         flexDirection="column"
         gridGap={4}
         noValidate
         onSubmit={handleSubmit(onSubmit)}
       >
-        <TextField
-          required
-          id="name"
-          label="User name"
-          variant="standard"
-          fullWidth={true}
-          {...register('name', {
-            required: {
-              value: true,
-              message: messages.isRequired,
-            },
-            pattern: {
-              value:
-                /^[a-zA-Zа-яА-Я]+(([' -][a - zA - Zа - яА - Я])?[a - zA - Zа - яА - Я]*) *$/,
-              message: messages.wrongInput,
-            },
-          })}
-          error={!!errors.name}
-          helperText={errors.name?.message}
-        />
         <TextField
           required
           id="email"
@@ -95,7 +73,7 @@ const RegisterPage = () => {
           helperText={errors.password?.message}
         />
         <Button type="submit" fullWidth={true} variant="contained">
-          Register user
+          Login
         </Button>
       </Box>
     </PageContainer>
@@ -104,4 +82,4 @@ const RegisterPage = () => {
 
 // RegisterPage.propTypes = {}
 
-export default RegisterPage;
+export default LoginPage;

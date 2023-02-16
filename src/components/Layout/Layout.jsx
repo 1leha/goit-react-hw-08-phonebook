@@ -8,14 +8,7 @@ const Layout = () => {
   return (
     <>
       <Header />
-      <Box
-        as="main"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        width="100vw"
-        height="100vh"
-      >
+      <Box as="main">
         <Outlet />
       </Box>
     </>

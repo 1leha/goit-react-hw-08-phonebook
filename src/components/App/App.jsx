@@ -1,7 +1,10 @@
 // import { useEffect } from 'react';
 // Redux
-import { Container } from 'components/Container/Container.styled';
+import { Container } from 'components/common/Container.styled';
 import Layout from 'components/Layout';
+import { Contacts } from 'Pages/Contacts';
+import { Home } from 'Pages/Home';
+import LoginPage from 'Pages/LoginPage';
 import RegisterPage from 'Pages/RegisterPage';
 import { Route, Routes } from 'react-router-dom';
 // import { useDispatch, useSelector } from 'react-redux';
@@ -62,10 +65,10 @@ export const App = () => {
     <Container>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<div>Home</div>} />
+          <Route index element={<Home />} />
           <Route path="register" element={<RegisterPage />} />
-          <Route path="login" element={<div>Login</div>} />
-          <Route path="contacts" element={<div>Contacts</div>} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="contacts" element={<Contacts />} />
         </Route>
       </Routes>
     </Container>
