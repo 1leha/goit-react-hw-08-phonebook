@@ -16,8 +16,8 @@ export const validationString = {
     /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/,
 };
 
-export const message = {
-  wrongInput: 'Input is not valid!',
+export const messages = {
+  wrongInput: 'Input data is not valid!',
   isRequired: 'This field is required!',
   isEmptyBook: 'The phonebook is empty...',
   noMatches: 'No matches found!',
