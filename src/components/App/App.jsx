@@ -1,12 +1,20 @@
 // import { useEffect } from 'react';
 // Redux
+import { PrivatRoute } from 'components/AuthRoutes/PrivatRoute';
+import { PublicRoute } from 'components/AuthRoutes/PublicRoute';
 import { Container } from 'components/common/Container.styled';
 import Layout from 'components/Layout';
 import { Contacts } from 'Pages/Contacts';
 import { Home } from 'Pages/Home';
 import LoginPage from 'Pages/LoginPage';
 import RegisterPage from 'Pages/RegisterPage';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { refresh, selectIsRefreshing } from 'redux/auth';
+
 // import { useDispatch, useSelector } from 'react-redux';
 // import { clearFilterReducer } from '../../redux/filterSlice';
 // import {
@@ -44,7 +52,8 @@ import { Route, Routes } from 'react-router-dom';
 
 // App
 export const App = () => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const isRefreshing = useSelector(selectIsRefreshing);
   // const isLoading = useSelector(sellectIsLoading);
   // const error = useSelector(sellectError);
   // const filteredContacts = useSelector(sellectFilteredContacts);
@@ -61,17 +70,46 @@ export const App = () => {
   //   dispatch(fetchContacts());
   // }, [dispatch]);
 
+  useEffect(() => {
+    dispatch(refresh());
+  }, [dispatch]);
+
   return (
-    <Container>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="register" element={<RegisterPage />} />
-          <Route path="login" element={<LoginPage />} />
-          <Route path="contacts" element={<Contacts />} />
-        </Route>
-      </Routes>
-    </Container>
+    <>
+      {!isRefreshing && (
+        <Container>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Home />} />
+
+              {/* Publick */}
+              <Route path="/" element={<PublicRoute />}>
+                <Route path="register" element={<RegisterPage />} />
+                <Route path="login" element={<LoginPage />} />
+              </Route>
+
+              {/* PRIVAT */}
+              <Route path="/" element={<PrivatRoute />}>
+                <Route path="contacts" element={<Contacts />} />
+              </Route>
+            </Route>
+            <Route path="*" element={<div>ERROR PAGE</div>} />
+          </Routes>
+        </Container>
+      )}
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+    </>
 
     // old APP
     // <Box

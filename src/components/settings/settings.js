@@ -22,3 +22,16 @@ export const messages = {
   isEmptyBook: 'The phonebook is empty...',
   noMatches: 'No matches found!',
 };
+
+export const BASE_URL = 'https://connections-api.herokuapp.com';
+
+export const USER_ENDPOINT = {
+  signup: '/users/signup',
+  login: '/users/login',
+  logout: '/users/logout',
+  current: '/users/current',
+};
+
+export const CONTACTS_ENDPOINT = {
+  contacts: '/contacts',
+};
