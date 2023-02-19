@@ -23,7 +23,11 @@ import Modal from 'components/Modal/Modal';
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import Filter from 'components/Filter';
 
-import { useDeleteContactMutation } from 'redux/contacts/contacts.api';
+import {
+  useAddContactMutation,
+  useDeleteContactMutation,
+  useUpdateContactMutation,
+} from 'redux/contacts/contacts.api';
 import { useFilteredContacts } from 'components/hook/useFilteredContacts';
 
 function descendingComparator(a, b, orderBy) {
@@ -158,7 +162,8 @@ EnhancedTableHead.propTypes = {
 
 function EnhancedTableToolbar(props) {
   const { contactsCount, allUsersArray } = props;
-  // console.log('contactsCount :>> ', contactsCount);
+  const [addContact, { isLoading: addContactIsLoading }] =
+    useAddContactMutation();
 
   return (
     <Toolbar>
@@ -173,11 +178,12 @@ function EnhancedTableToolbar(props) {
       {contactsCount !== 0 && <Filter />}
 
       <Modal
-        type="add"
-        icon={<ControlPointIcon fontSize="large" />}
-        allUsers={allUsersArray}
         title="Add new contact"
         submitButtonName="Add contact"
+        icon={<ControlPointIcon fontSize="large" />}
+        allUsers={allUsersArray}
+        submitForm={addContact}
+        isLoading={addContactIsLoading}
       />
     </Toolbar>
   );
@@ -195,52 +201,14 @@ export default function ContactsTable() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [deleteById, { isLoading }] = useDeleteContactMutation();
   const { filteredContacts, contacts } = useFilteredContacts();
-
-  // const { data = [], error, isLoading } = useGetContactQuery();
-  // const filter = useSelector(sellectFilter);
-
-  // const filteredContacts = (filter, data) => {
-  //   const filterNormalized = filter.toLowerCase();
-  //   return data.filter(({ name }) =>
-  //     name.toLowerCase().includes(filterNormalized)
-  //   );
-  // };
-  // console.log('filteredContacts :>> ', filteredContacts);
+  const [editContact, { isLoading: editContactIsLoading }] =
+    useUpdateContactMutation();
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
   };
-
-  //   const handleSelectAllClick = event => {
-  //     if (event.target.checked) {
-  //       const newSelected = rows.map(n => n.name);
-  //       setSelected(newSelected);
-  //       return;
-  //     }
-  //     setSelected([]);
-  //   };
-
-  //   const handleClick = (event, name) => {
-  //     const selectedIndex = selected.indexOf(name);
-  //     let newSelected = [];
-
-  //     if (selectedIndex === -1) {
-  //       newSelected = newSelected.concat(selected, name);
-  //     } else if (selectedIndex === 0) {
-  //       newSelected = newSelected.concat(selected.slice(1));
-  //     } else if (selectedIndex === selected.length - 1) {
-  //       newSelected = newSelected.concat(selected.slice(0, -1));
-  //     } else if (selectedIndex > 0) {
-  //       newSelected = newSelected.concat(
-  //         selected.slice(0, selectedIndex),
-  //         selected.slice(selectedIndex + 1)
-  //       );
-  //     }
-
-  //     setSelected(newSelected);
-  //   };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -261,8 +229,6 @@ export default function ContactsTable() {
     }
     deleteById(id);
   };
-
-  //   const isSelected = name => selected.indexOf(name) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -316,24 +282,21 @@ export default function ContactsTable() {
                         >
                           {numberByOrder}
                         </TableCell>
-                        <TableCell align="left" width={200}>
-                          {row.name}
-                        </TableCell>
-                        <TableCell align="right" width={200}>
-                          {row.number}
-                        </TableCell>
-                        {/* <TableCell align="right" width={200}>
-                        {row.createdAt}
-                      </TableCell> */}
-                        <TableCell align="right" width={120}>
+                        <TableCell align="left">{row.name}</TableCell>
+                        <TableCell align="right">{row.number}</TableCell>
+
+                        <TableCell align="right">
                           <Modal
-                            type="edit"
                             icon={<CreateIcon />}
                             user={row}
                             allUsers={array}
+                            title="Edit contact"
+                            submitButtonName="Save changes"
+                            submitForm={editContact}
+                            isLoading={editContactIsLoading}
                           />
                         </TableCell>
-                        <TableCell align="right" width={120}>
+                        <TableCell align="right">
                           <IconButton onClick={() => handleDelete(row.id)}>
                             <DeleteIcon />
                           </IconButton>

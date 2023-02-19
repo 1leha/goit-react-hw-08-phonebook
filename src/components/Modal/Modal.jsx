@@ -11,33 +11,28 @@ import PropTypes from 'prop-types';
 import Form from 'components/Form';
 import { useForm } from 'react-hook-form';
 import { messages } from 'components/settings';
-import {
-  useAddContactMutation,
-  useUpdateContactMutation,
-} from 'redux/contacts/contacts.api';
 import { toast } from 'react-toastify';
 import { LocaleSpiner } from 'components/Spiners/FullscreenSpiner';
 
-function Modal({ type, icon, user = { name: '', number: '' }, allUsers = [] }) {
+function Modal({
+  title,
+  submitButtonName,
+  icon,
+  user = { name: '', number: '' },
+  allUsers = [],
+  submitForm,
+  isLoading,
+}) {
   const [open, setOpen] = useState(false);
   const [activeUser, setActiveUser] = useState(user);
   const [allUsersArr, setAllUsersArr] = useState(allUsers);
 
-  const [addContact, { isLoading: addContactIsLoading }] =
-    useAddContactMutation();
-  const [editContact, { isLoading: editContactIsLoading }] =
-    useUpdateContactMutation();
-
-  const title = type === 'add' ? 'Add new contact' : 'Edit contact';
-  const submitButtonName = type === 'add' ? 'Add contact' : 'Save changes';
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
   } = useForm();
-
-  // console.log('allUsers from props:>> ', allUsersArr);
 
   const handleClickOpen = e => {
     // console.log('Inside Modal user :>> ', user);
@@ -56,16 +51,9 @@ function Modal({ type, icon, user = { name: '', number: '' }, allUsers = [] }) {
       toast.error(messages.userIsExist);
       return;
     }
-    switch (type) {
-      case 'add':
-        addContact(data);
-        break;
 
-      default:
-        editContact({ id: user.id, credentials: data });
-
-        break;
-    }
+    const sendData = user.id ? { id: user.id, credentials: data } : data;
+    submitForm(sendData);
 
     reset();
     setOpen(false);
@@ -81,7 +69,7 @@ function Modal({ type, icon, user = { name: '', number: '' }, allUsers = [] }) {
 
   return (
     <div>
-      {addContactIsLoading || editContactIsLoading ? (
+      {isLoading ? (
         <LocaleSpiner />
       ) : (
         <IconButton onClick={handleClickOpen}>{icon}</IconButton>
@@ -151,7 +139,8 @@ function Modal({ type, icon, user = { name: '', number: '' }, allUsers = [] }) {
 }
 
 Modal.propTypes = {
-  type: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  submitButtonName: PropTypes.string.isRequired,
   user: PropTypes.shape({
     id: PropTypes.string,
     name: PropTypes.string,
