@@ -5,6 +5,11 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout, selectIsRefreshing, selectUser } from 'redux/auth';
+import {
+  StyledAvatarContainer,
+  StyledUserContainer,
+  StyledUserNick,
+} from './UserMenu.Styled';
 
 export const UserMenu = () => {
   const { name } = useSelector(selectUser);
@@ -21,9 +26,12 @@ export const UserMenu = () => {
   };
 
   return (
-    <Box display="flex" alignItems="center" gridGap="10px">
-      <Avatar />
-      <p>{name}</p>
+    <StyledUserContainer>
+      <StyledAvatarContainer>
+        <Avatar />
+        <StyledUserNick>{name}</StyledUserNick>
+      </StyledAvatarContainer>
+
       <Button
         type="button"
         fullWidth={true}
@@ -32,6 +40,6 @@ export const UserMenu = () => {
       >
         Logout
       </Button>
-    </Box>
+    </StyledUserContainer>
   );
 };

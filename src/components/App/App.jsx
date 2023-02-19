@@ -83,25 +83,23 @@ export const App = () => {
     <>
       <Suspense fallback={<FullscreenSpiner />}>
         {!isRefreshing && (
-          <Container>
-            <Routes>
-              <Route path="/" element={<Layout />}>
-                <Route index element={<Home />} />
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Home />} />
 
-                {/* Publick */}
-                <Route path="/" element={<PublicRoute />}>
-                  <Route path="register" element={<RegisterPage />} />
-                  <Route path="login" element={<LoginPage />} />
-                </Route>
-
-                {/* PRIVAT */}
-                <Route path="/" element={<PrivatRoute />}>
-                  <Route path="contacts" element={<Contacts />} />
-                </Route>
-                <Route path="*" element={<div>Tipe loading ERROR!</div>} />
+              {/* Publick */}
+              <Route path="/" element={<PublicRoute />}>
+                <Route path="register" element={<RegisterPage />} />
+                <Route path="login" element={<LoginPage />} />
               </Route>
-            </Routes>
-          </Container>
+
+              {/* PRIVAT */}
+              <Route path="/" element={<PrivatRoute />}>
+                <Route path="contacts" element={<Contacts />} />
+              </Route>
+              <Route path="*" element={<div>Tipe loading ERROR!</div>} />
+            </Route>
+          </Routes>
         )}
         <ToastContainer
           position="top-right"

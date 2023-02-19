@@ -1,1 +1,2 @@
-export * from './settings';
+export * from './UserMenu';
+export * from './UserMenu.Styled';
