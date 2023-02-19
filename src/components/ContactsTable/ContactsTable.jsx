@@ -176,6 +176,8 @@ function EnhancedTableToolbar(props) {
         type="add"
         icon={<ControlPointIcon fontSize="large" />}
         allUsers={allUsersArray}
+        title="Add new contact"
+        submitButtonName="Add contact"
       />
     </Toolbar>
   );

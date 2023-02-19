@@ -2,18 +2,23 @@
 // Redux
 import { PrivatRoute } from 'components/AuthRoutes/PrivatRoute';
 import { PublicRoute } from 'components/AuthRoutes/PublicRoute';
-import { Container } from 'components/common/Container.styled';
-import Layout from 'components/Layout';
-import { Contacts } from 'Pages/Contacts';
-import { Home } from 'Pages/Home';
-import LoginPage from 'Pages/LoginPage';
-import RegisterPage from 'Pages/RegisterPage';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Container } from 'components/common/Container.styled';
+import { Home } from 'Pages/Home';
+import { lazy, Suspense, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Route, Routes } from 'react-router-dom';
 import { refresh, selectIsRefreshing } from 'redux/auth';
+import {
+  FullscreenSpiner,
+  LocaleSpiner,
+} from 'components/Spiners/FullscreenSpiner';
+
+const Layout = lazy(() => import('components/Layout'));
+const LoginPage = lazy(() => import('Pages/LoginPage'));
+const RegisterPage = lazy(() => import('Pages/RegisterPage'));
+const Contacts = lazy(() => import('Pages/Contacts'));
 
 // import { useDispatch, useSelector } from 'react-redux';
 // import { clearFilterReducer } from '../../redux/filterSlice';
@@ -76,41 +81,42 @@ export const App = () => {
 
   return (
     <>
-      {!isRefreshing && (
-        <Container>
-          <Routes>
-            <Route path="/" element={<Layout />}>
-              <Route index element={<Home />} />
+      <Suspense fallback={<FullscreenSpiner />}>
+        {!isRefreshing && (
+          <Container>
+            <Routes>
+              <Route path="/" element={<Layout />}>
+                <Route index element={<Home />} />
 
-              {/* Publick */}
-              <Route path="/" element={<PublicRoute />}>
-                <Route path="register" element={<RegisterPage />} />
-                <Route path="login" element={<LoginPage />} />
-              </Route>
+                {/* Publick */}
+                <Route path="/" element={<PublicRoute />}>
+                  <Route path="register" element={<RegisterPage />} />
+                  <Route path="login" element={<LoginPage />} />
+                </Route>
 
-              {/* PRIVAT */}
-              <Route path="/" element={<PrivatRoute />}>
-                <Route path="contacts" element={<Contacts />} />
+                {/* PRIVAT */}
+                <Route path="/" element={<PrivatRoute />}>
+                  <Route path="contacts" element={<Contacts />} />
+                </Route>
+                <Route path="*" element={<div>Tipe loading ERROR!</div>} />
               </Route>
-              <Route path="*" element={<div>Tipe loading ERROR!</div>} />
-            </Route>
-          </Routes>
-        </Container>
-      )}
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
+            </Routes>
+          </Container>
+        )}
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+      </Suspense>
     </>
-
     // old APP
     // <Box
     //   height="100vh"

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -16,13 +16,17 @@ import {
   useUpdateContactMutation,
 } from 'redux/contacts/contacts.api';
 import { toast } from 'react-toastify';
+import { LocaleSpiner } from 'components/Spiners/FullscreenSpiner';
 
 function Modal({ type, icon, user = { name: '', number: '' }, allUsers = [] }) {
-  const [open, setOpen] = React.useState(false);
-  const [activeUser, setActiveUser] = React.useState(user);
-  const [allUsersArr, setAllUsersArr] = React.useState(allUsers);
-  const [addContact] = useAddContactMutation();
-  const [editContact] = useUpdateContactMutation();
+  const [open, setOpen] = useState(false);
+  const [activeUser, setActiveUser] = useState(user);
+  const [allUsersArr, setAllUsersArr] = useState(allUsers);
+
+  const [addContact, { isLoading: addContactIsLoading }] =
+    useAddContactMutation();
+  const [editContact, { isLoading: editContactIsLoading }] =
+    useUpdateContactMutation();
 
   const title = type === 'add' ? 'Add new contact' : 'Edit contact';
   const submitButtonName = type === 'add' ? 'Add contact' : 'Save changes';
@@ -72,14 +76,16 @@ function Modal({ type, icon, user = { name: '', number: '' }, allUsers = [] }) {
   };
 
   const isContactExist = abonentName => {
-    // console.log('isContactExist abonentName ', abonentName);
-    // console.log('isContactExist allUsersArr ', allUsersArr);
     return allUsersArr.find(({ name }) => name === abonentName);
   };
 
   return (
     <div>
-      <IconButton onClick={handleClickOpen}>{icon}</IconButton>
+      {addContactIsLoading || editContactIsLoading ? (
+        <LocaleSpiner />
+      ) : (
+        <IconButton onClick={handleClickOpen}>{icon}</IconButton>
+      )}
       <Dialog open={open} fullWidth={true} onClose={handleClose}>
         <Form autoComplete="on" noValidate onSubmit={handleSubmit(onSubmit)}>
           <DialogTitle>{title}</DialogTitle>
