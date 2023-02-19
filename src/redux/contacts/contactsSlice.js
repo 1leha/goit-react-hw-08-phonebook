@@ -8,8 +8,28 @@ import {
   clearAllContact,
 } from './contactsOperations';
 
+function createData(id, name, number, createdAt) {
+  return {
+    id,
+    name,
+    number,
+    createdAt,
+  };
+}
+
+const rows = [
+  createData(1, 'Alex', '000 111 22 55', '2023/11/01'),
+  createData(2, 'Der', '000 111 22 33', '2023/07/01'),
+  createData(3, 'AAdff', '000 111 44 33', '2023/01/04'),
+  createData(4, 'assad', '000 111 44 33', '2023/01/04'),
+  createData(5, 'dfgd', '000 111 44 33', '2023/01/04'),
+  createData(6, 'rtuy', '000 111 44 33', '2023/01/04'),
+  createData(7, 'rgdg', '000 111 44 33', '2023/01/04'),
+  createData(8, 'uio', '000 111 44 33', '2023/01/04'),
+];
+
 const initialContacts = {
-  items: [],
+  items: rows,
   isLoading: false,
   error: null,
 };

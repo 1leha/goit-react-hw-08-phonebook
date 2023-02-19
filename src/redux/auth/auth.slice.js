@@ -11,6 +11,7 @@ const initialAuthState = {
 const authSlice = createSlice({
   name: 'auth',
   initialState: initialAuthState,
+
   extraReducers: builder => {
     builder
 
@@ -50,8 +51,9 @@ const authSlice = createSlice({
       })
       .addCase(refresh.rejected, state => {
         state.isRefreshing = false;
+        state.token = null;
       });
   },
 });
-
+export const { setAvatar } = authSlice.actions;
 export const authReducer = authSlice.reducer;

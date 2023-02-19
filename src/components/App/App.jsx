@@ -92,8 +92,8 @@ export const App = () => {
               <Route path="/" element={<PrivatRoute />}>
                 <Route path="contacts" element={<Contacts />} />
               </Route>
+              <Route path="*" element={<div>Tipe loading ERROR!</div>} />
             </Route>
-            <Route path="*" element={<div>ERROR PAGE</div>} />
           </Routes>
         </Container>
       )}

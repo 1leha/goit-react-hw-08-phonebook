@@ -8,10 +8,14 @@ import { messages } from 'components/settings/settings';
 import { PageContainer } from 'components/common/PageContainer';
 import Form from 'components/Form';
 import { login } from 'redux/auth/auth.operations';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectIsRefreshing } from 'redux/auth';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
   const dispatch = useDispatch();
+  const isRefreshing = useSelector(selectIsRefreshing);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -20,8 +24,10 @@ const LoginPage = () => {
     reset,
   } = useForm();
 
-  const onSubmit = data => {
-    dispatch(login(data));
+  const onSubmit = async data => {
+    await dispatch(login(data)).unwrap();
+    navigate('/contacts');
+
     reset();
   };
 

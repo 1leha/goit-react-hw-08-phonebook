@@ -9,6 +9,7 @@
     "@mui/icons-material": "^5.11.9",
     "@mui/material": "^5.11.9",
     "@mui/styled-engine-sc": "^5.11.9",
+    "@mui/x-data-grid": "^5.17.24",
     "@redux-devtools/extension": "^3.2.5",
     "@reduxjs/toolkit": "^1.9.1",
     "@testing-library/jest-dom": "^5.16.3",

@@ -31,8 +31,6 @@ const Filter = () => {
 
   return (
     <Box mb="4">
-      <LabelStyled htmlFor="filter">Find contacts by name</LabelStyled>
-
       <Box
         display="flex"
         alignItems="center"

@@ -37,7 +37,7 @@ export const login = createAsyncThunk(
     } catch (error) {
       toast.error(error.message);
 
-      rejectWithValue(error);
+      return rejectWithValue(error);
     }
   }
 );
@@ -51,7 +51,7 @@ export const logout = createAsyncThunk(
     } catch (error) {
       toast.error(error.message);
 
-      rejectWithValue(error);
+      return rejectWithValue(error);
     }
   }
 );
@@ -72,7 +72,7 @@ export const refresh = createAsyncThunk(
       const { data } = await publickRequest.api.get(USER_ENDPOINT.current);
       return data;
     } catch (error) {
-      rejectWithValue(error);
+      return rejectWithValue(error);
     }
   }
 );
