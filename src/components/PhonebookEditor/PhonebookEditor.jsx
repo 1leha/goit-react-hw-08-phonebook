@@ -2,7 +2,7 @@ import React from 'react';
 
 // Redux
 import { useDispatch, useSelector } from 'react-redux';
-import { sellectContacts } from '../../redux/selectors';
+import { sellectContacts } from '../../redux/filter/filter.selectors';
 
 // formik
 import { Formik, Form, ErrorMessage } from 'formik';

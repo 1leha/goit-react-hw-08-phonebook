@@ -19,78 +19,12 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CreateIcon from '@mui/icons-material/Create';
 import { visuallyHidden } from '@mui/utils';
-import { TextField } from '@mui/material';
 import Modal from 'components/Modal/Modal';
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import Filter from 'components/Filter';
-import { useSelector } from 'react-redux';
-import { sellectFilteredContacts } from 'redux/selectors';
-import {
-  useDeleteContactMutation,
-  useGetContactQuery,
-} from 'redux/contacts/contacts.api';
 
-// const Search = styled('div')(({ theme }) => ({
-//   position: 'relative',
-//   borderRadius: theme.shape.borderRadius,
-//   backgroundColor: alpha(theme.palette.common.white, 0.15),
-//   '&:hover': {
-//     backgroundColor: alpha(theme.palette.common.white, 0.25),
-//   },
-//   marginLeft: 0,
-//   width: '100%',
-//   [theme.breakpoints.up('sm')]: {
-//     marginLeft: theme.spacing(1),
-//     width: 'auto',
-//   },
-// }));
-
-// const SearchIconWrapper = styled('div')(({ theme }) => ({
-//   padding: theme.spacing(0, 2),
-//   height: '100%',
-//   position: 'absolute',
-//   pointerEvents: 'none',
-//   display: 'flex',
-//   alignItems: 'center',
-//   justifyContent: 'center',
-// }));
-
-// const StyledInputBase = styled(InputBase)(({ theme }) => ({
-//   color: 'inherit',
-//   '& .MuiInputBase-input': {
-//     padding: theme.spacing(1, 1, 1, 0),
-//     // vertical padding + font size from searchIcon
-//     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-//     transition: theme.transitions.create('width'),
-//     width: '100%',
-//     [theme.breakpoints.up('sm')]: {
-//       width: '12ch',
-//       '&:focus': {
-//         width: '20ch',
-//       },
-//     },
-//   },
-// }));
-
-// function createData(id, name, number, createdAt) {
-//   return {
-//     id,
-//     name,
-//     number,
-//     createdAt,
-//   };
-// }
-
-// const rows = [
-//   createData(1, 'Alex', '000 111 22 55', '2023/11/01'),
-//   createData(2, 'Der', '000 111 22 33', '2023/07/01'),
-//   createData(3, 'AAdff', '000 111 44 33', '2023/01/04'),
-//   createData(4, 'AAdff', '000 111 44 33', '2023/01/04'),
-//   createData(5, 'AAdff', '000 111 44 33', '2023/01/04'),
-//   createData(6, 'AAdff', '000 111 44 33', '2023/01/04'),
-//   createData(7, 'AAdff', '000 111 44 33', '2023/01/04'),
-//   createData(8, 'AAdff', '000 111 44 33', '2023/01/04'),
-// ];
+import { useDeleteContactMutation } from 'redux/contacts/contacts.api';
+import { useFilteredContacts } from 'components/hook/useFilteredContacts';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -143,12 +77,7 @@ const headCells = [
     disablePadding: false,
     label: 'Phone number',
   },
-  // {
-  //   id: 'createdAt',
-  //   numeric: true,
-  //   disablePadding: false,
-  //   label: 'Date of creation',
-  // },
+
   {
     id: 'editContact',
     numeric: true,
@@ -228,57 +157,52 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  const { numSelected } = props;
+  const { contactsCount, allUsersArray } = props;
+  // console.log('contactsCount :>> ', contactsCount);
 
   return (
-    <Toolbar
-      sx={{
-        pl: { sm: 2 },
-        pr: { xs: 1, sm: 1 },
-        ...(numSelected > 0 && {
-          bgcolor: theme =>
-            alpha(
-              theme.palette.primary.main,
-              theme.palette.action.activatedOpacity
-            ),
-        }),
-      }}
-    >
+    <Toolbar>
       <Typography
         sx={{ flex: '1 1 100%' }}
         variant="h6"
         id="tableTitle"
         component="div"
       >
-        Contacts
+        Contacts [{contactsCount}]
       </Typography>
-      <Filter />
+      {contactsCount !== 0 && <Filter />}
 
-      <Modal type="add" icon={<ControlPointIcon fontSize="large" />} />
+      <Modal
+        type="add"
+        icon={<ControlPointIcon fontSize="large" />}
+        allUsers={allUsersArray}
+      />
     </Toolbar>
   );
 }
 
 EnhancedTableToolbar.propTypes = {
-  //   numSelected: PropTypes.number.isRequired,
+  contactsCount: PropTypes.number.isRequired,
 };
 
 export default function ContactsTable() {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('name');
-  //   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [deleteById, { isLoading }] = useDeleteContactMutation();
+  const { filteredContacts, contacts } = useFilteredContacts();
 
-  const { data = [], error, isLoading } = useGetContactQuery();
-  const [setId, id] = useDeleteContactMutation();
+  // const { data = [], error, isLoading } = useGetContactQuery();
+  // const filter = useSelector(sellectFilter);
 
-  // console.log('data :>> ', data);
-  // console.log('error :>> ', error);
-  // console.log('isLoading :>> ', isLoading);
-
-  // const filteredContacts = useSelector(sellectFilteredContacts);
+  // const filteredContacts = (filter, data) => {
+  //   const filterNormalized = filter.toLowerCase();
+  //   return data.filter(({ name }) =>
+  //     name.toLowerCase().includes(filterNormalized)
+  //   );
+  // };
   // console.log('filteredContacts :>> ', filteredContacts);
 
   const handleRequestSort = (event, property) => {
@@ -330,19 +254,27 @@ export default function ContactsTable() {
   };
 
   const handleDelete = id => {
-    // console.log('id to Delete', id);
-    setId(id);
+    if (isLoading) {
+      return;
+    }
+    deleteById(id);
   };
 
   //   const isSelected = name => selected.indexOf(name) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
+    page > 0
+      ? Math.max(0, (1 + page) * rowsPerPage - filteredContacts.length)
+      : 0;
+
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar />
+        <EnhancedTableToolbar
+          contactsCount={contacts.length}
+          allUsersArray={contacts}
+        />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -354,91 +286,102 @@ export default function ContactsTable() {
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
-              rowCount={data.length}
+              rowCount={contacts.length}
             />
-            <TableBody>
-              {stableSort(data, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const labelId = `enhanced-table-checkbox-${index}`;
-                  const numberByOrder = index + 1;
-                  return (
-                    <TableRow
-                      hover
-                      //   onClick={event => handleClick(event, row.name)}
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={row.id}
-                    >
-                      {/* <TableCell padding="checkbox">
-                        <Checkbox
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            'aria-labelledby': labelId,
-                          }}
-                        />
-                      </TableCell> */}
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="normal"
-                        align="right"
-                        width={40}
+            {filteredContacts.length !== 0 && (
+              <TableBody>
+                {stableSort(filteredContacts, getComparator(order, orderBy))
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row, index, array) => {
+                    const labelId = `enhanced-table-checkbox-${index}`;
+                    const numberByOrder = index + 1;
+
+                    return (
+                      <TableRow
+                        hover
+                        //   onClick={event => handleClick(event, row.name)}
+                        role="checkbox"
+                        tabIndex={-1}
+                        key={row.id}
                       >
-                        {row.id}
-                      </TableCell>
-                      <TableCell align="left" width={200}>
-                        {row.name}
-                      </TableCell>
-                      <TableCell align="right" width={200}>
-                        {row.number}
-                      </TableCell>
-                      {/* <TableCell align="right" width={200}>
+                        <TableCell
+                          component="th"
+                          id={labelId}
+                          scope="row"
+                          padding="normal"
+                          align="right"
+                          width={40}
+                        >
+                          {numberByOrder}
+                        </TableCell>
+                        <TableCell align="left" width={200}>
+                          {row.name}
+                        </TableCell>
+                        <TableCell align="right" width={200}>
+                          {row.number}
+                        </TableCell>
+                        {/* <TableCell align="right" width={200}>
                         {row.createdAt}
                       </TableCell> */}
-                      <TableCell align="right" width={120}>
-                        <Modal
-                          type="edit"
-                          icon={<CreateIcon />}
-                          user={!isLoading && row}
-                        />
-                      </TableCell>
-                      <TableCell align="right" width={120}>
-                        <IconButton onClick={() => handleDelete(row.id)}>
-                          <DeleteIcon />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow
-                  style={{
-                    height: (dense ? 33 : 53) * emptyRows,
-                  }}
-                >
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
+                        <TableCell align="right" width={120}>
+                          <Modal
+                            type="edit"
+                            icon={<CreateIcon />}
+                            user={row}
+                            allUsers={array}
+                          />
+                        </TableCell>
+                        <TableCell align="right" width={120}>
+                          <IconButton onClick={() => handleDelete(row.id)}>
+                            <DeleteIcon />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                {emptyRows > 0 && (
+                  <TableRow
+                    style={{
+                      height: (dense ? 33 : 53) * emptyRows,
+                    }}
+                  >
+                    <TableCell colSpan={6} />
+                  </TableRow>
+                )}
+              </TableBody>
+            )}
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={data.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
+        {filteredContacts.length === 0 ? (
+          <Box
+            sx={{
+              width: '100%',
+              p: 2,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            The phonebook is empty
+          </Box>
+        ) : (
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={filteredContacts.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        )}
       </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      />
+      {filteredContacts.length !== 0 && (
+        <FormControlLabel
+          control={<Switch checked={dense} onChange={handleChangeDense} />}
+          label="Dense padding"
+        />
+      )}
     </Box>
   );
 }

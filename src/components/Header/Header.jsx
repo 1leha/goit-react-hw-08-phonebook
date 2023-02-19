@@ -1,4 +1,5 @@
 import { Box } from 'components/Box';
+import Logo from 'components/Logo';
 import { UserMenu } from 'components/UserMenu/UserMenu';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -17,7 +18,7 @@ const Header = () => {
       justifyContent="space-between"
     >
       <Box as="nav" display="flex" alignItems="center" gridGap={4}>
-        <div>LOGO</div>
+        <Logo />
         <NavLink to="/">Home</NavLink>
         {isLoggedIn && !isRefreshing && (
           <NavLink to="/contacts">Contacts</NavLink>

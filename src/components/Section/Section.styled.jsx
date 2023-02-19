@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
 export const SectionStyled = styled.section`
-  padding: ${p => p.theme.space[4]}px;
+  margin-top: ${p => p.theme.space[5]}px;
+
   position: relative;
 `;
 

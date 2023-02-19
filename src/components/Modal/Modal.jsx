@@ -13,16 +13,16 @@ import { useForm } from 'react-hook-form';
 import { messages } from 'components/settings';
 import {
   useAddContactMutation,
-  useGetContactQuery,
   useUpdateContactMutation,
 } from 'redux/contacts/contacts.api';
+import { toast } from 'react-toastify';
 
-function Modal({ type, icon, user = null }) {
+function Modal({ type, icon, user = { name: '', number: '' }, allUsers = [] }) {
   const [open, setOpen] = React.useState(false);
   const [activeUser, setActiveUser] = React.useState(user);
+  const [allUsersArr, setAllUsersArr] = React.useState(allUsers);
   const [addContact] = useAddContactMutation();
   const [editContact] = useUpdateContactMutation();
-  // const { data = [], error, isLoading } = useGetContactQuery();
 
   const title = type === 'add' ? 'Add new contact' : 'Edit contact';
   const submitButtonName = type === 'add' ? 'Add contact' : 'Save changes';
@@ -33,10 +33,13 @@ function Modal({ type, icon, user = null }) {
     reset,
   } = useForm();
 
+  // console.log('allUsers from props:>> ', allUsersArr);
+
   const handleClickOpen = e => {
-    console.log('Inside Modal user :>> ', user);
+    // console.log('Inside Modal user :>> ', user);
     setOpen(true);
     setActiveUser(user);
+    setAllUsersArr(allUsers);
   };
 
   const handleClose = () => {
@@ -45,6 +48,10 @@ function Modal({ type, icon, user = null }) {
   };
 
   const onSubmit = data => {
+    if (isContactExist(data.name)) {
+      toast.error(messages.userIsExist);
+      return;
+    }
     switch (type) {
       case 'add':
         addContact(data);
@@ -62,6 +69,12 @@ function Modal({ type, icon, user = null }) {
 
   const handleChange = e => {
     setActiveUser({ ...activeUser, [e.target.name]: e.target.value });
+  };
+
+  const isContactExist = abonentName => {
+    // console.log('isContactExist abonentName ', abonentName);
+    // console.log('isContactExist allUsersArr ', allUsersArr);
+    return allUsersArr.find(({ name }) => name === abonentName);
   };
 
   return (
@@ -100,13 +113,17 @@ function Modal({ type, icon, user = null }) {
               margin="dense"
               id="number"
               label="Phone number"
-              type="text"
+              type="tel"
               fullWidth={true}
               variant="standard"
               {...register('number', {
                 required: {
                   value: true,
                   message: messages.isRequired,
+                },
+                pattern: {
+                  value: /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/,
+                  message: messages.wrongInput,
                 },
               })}
               error={!!errors.number}
@@ -135,6 +152,13 @@ Modal.propTypes = {
     number: PropTypes.string,
   }),
   icon: PropTypes.element.isRequired,
+  allUsers: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      name: PropTypes.string,
+      number: PropTypes.string,
+    })
+  ),
 };
 
 export default Modal;

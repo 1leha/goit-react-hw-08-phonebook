@@ -2,8 +2,8 @@ import React from 'react';
 
 // redux
 import { useDispatch, useSelector } from 'react-redux';
-import { sellectContacts } from '../../redux/selectors';
-import { clearFilterReducer } from '../../redux/filterSlice';
+import { sellectContacts } from '../../redux/filter/filter.selectors';
+import { clearFilterReducer } from '../../redux/filter/filterSlice';
 
 // icons
 import { MdDelete } from 'react-icons/md';
