@@ -6,7 +6,6 @@ import { StyledLink } from 'components/Logo/Logo.Styled';
 import { UserMenu } from 'components/UserMenu/UserMenu';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { NavLink } from 'react-router-dom';
 import { selectIsLoggedIn, selectIsRefreshing } from 'redux/auth';
 import {
   StyledHeader,

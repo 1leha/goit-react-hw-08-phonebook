@@ -116,7 +116,7 @@ function Modal({
                   message: messages.isRequired,
                 },
                 pattern: {
-                  value: /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/,
+                  value: /^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/,
                   message: messages.wrongInput,
                 },
               })}
