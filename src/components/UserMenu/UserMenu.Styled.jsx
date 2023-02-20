@@ -1,27 +1,5 @@
 import styled from 'styled-components';
 
-export const StyledAvatarContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: ${p => p.theme.space[2]}px;
-  max-width: none;
-
-  @media (min-width: 768px) {
-    min-width: 200px;
-    max-width: none;
-
-    flex-direction: row;
-    justify-content: flex-end;
-    gap: ${p => p.theme.space[3]}px;
-  }
-`;
-
-export const StyledUserNick = styled.p`
-  margin: ${p => p.theme.space[0]}px;
-  text-align: center;
-`;
-
 export const StyledUserContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -32,10 +10,33 @@ export const StyledUserContainer = styled.div`
   gap: ${p => p.theme.space[4]}px;
 
   @media (min-width: 768px) {
-    max-width: 1250px;
+    max-width: 300px;
+    gap: ${p => p.theme.space[4]}px;
 
     flex-direction: row;
     justify-content: flex-start;
   }
   /* background-color: azure; */
+`;
+
+export const StyledAvatarContainer = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: ${p => p.theme.space[2]}px;
+  max-width: none;
+
+  @media (min-width: 768px) {
+    min-width: 200px;
+    max-width: none;
+
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+    gap: ${p => p.theme.space[3]}px;
+  }
+`;
+
+export const StyledUserNick = styled.p`
+  margin: ${p => p.theme.space[0]}px;
+  text-align: center;
 `;
