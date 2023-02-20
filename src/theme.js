@@ -9,11 +9,14 @@ export const theme = {
 
     primary: 'black',
     secondary: 'white',
-    third: '#aaaaaa',
-    notification: '#ed0000',
+    third: '#444444',
+    fourth: '#1976d2',
+    hover: '#1976d233',
+    active: '#1976d211',
+    unfocused: '#1976d211',
 
     titleBG: '#65472e',
-    formBG: '#eeeeee',
+    formBG: '#efefef',
   },
 
   fonts: {
@@ -21,7 +24,7 @@ export const theme = {
   },
 
   fontSizes: {
-    s: '12px',
+    s: '14px',
     m: '18px',
     l: '20px',
     xl: '26px',
@@ -41,13 +44,13 @@ export const theme = {
 
   radii: {
     none: 'none',
-    standart: '10px',
+    standart: '5px',
     rounded: '20px',
     round: '50%',
   },
 
   shadows: {
-    standart: `0px 0px 10px #11111155`,
+    standart: `0px 0px 5px #44444455`,
     onFocus: `inset 0px -2px 2px #00000055`,
     onHover: `inset 0 0 5px #00000055`,
   },

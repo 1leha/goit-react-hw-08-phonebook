@@ -33,7 +33,7 @@ const LoginPage = () => {
 
   return (
     <PageContainer>
-      <Box minWidth="320px" display="flex" flexDirection="column" gridGap={4}>
+      <Box minWidth="280px" display="flex" flexDirection="column" gridGap={4}>
         <h3>Login, please</h3>
         <Form autoComplete="on" noValidate onSubmit={handleSubmit(onSubmit)}>
           <TextField

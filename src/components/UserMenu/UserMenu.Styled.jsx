@@ -7,6 +7,10 @@ export const StyledUserContainer = styled.div`
   justify-content: flex-start;
   max-width: 120px;
 
+  position: absolute;
+  top: 0;
+  right: 0;
+
   gap: ${p => p.theme.space[4]}px;
 
   @media (min-width: 768px) {
