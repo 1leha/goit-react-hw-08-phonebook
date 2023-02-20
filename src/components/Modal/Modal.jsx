@@ -12,7 +12,7 @@ import Form from 'components/Form';
 import { useForm } from 'react-hook-form';
 import { messages } from 'components/settings';
 import { toast } from 'react-toastify';
-import { LocaleSpiner } from 'components/Spiners/FullscreenSpiner';
+import { LocaleSpiner } from 'components/Spiners/Spiner';
 
 function Modal({
   title,

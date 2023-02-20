@@ -10,7 +10,6 @@ export const contactsApi = createApi({
       if (token) {
         headers.set('authorization', `Bearer ${token}`);
       }
-      // console.log('token :>> ', token);
       return headers;
     },
   }),
@@ -45,7 +44,6 @@ export const contactsApi = createApi({
           url: CONTACTS_ENDPOINT.contacts + `/${id}`,
           method: 'PATCH',
           body: credentials,
-          // body: { name: 'test', number: 'test' },
         };
       },
       invalidatesTags: ['Contacts'],

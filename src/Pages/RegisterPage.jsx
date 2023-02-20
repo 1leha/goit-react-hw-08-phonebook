@@ -1,21 +1,17 @@
-import { Button, TextField } from '@mui/material';
+import { Button, TextField, Typography } from '@mui/material';
 import { Box } from 'components/Box';
 
 import React from 'react';
 import { useForm } from 'react-hook-form';
-// import PropTypes from 'prop-types'
 
 import { messages } from 'components/settings/settings';
 import { PageContainer } from 'components/common/PageContainer';
 import Form from 'components/Form';
 import { useDispatch } from 'react-redux';
 import { registerUser } from 'redux/auth/auth.operations';
-// import { useRegisterUserMutation } from 'redux/auth/auth.API';
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
-  // const [registerUser, { registerUsererror, registerUserisLoading }] =
-  //   useRegisterUserMutation();
 
   const {
     register,
@@ -33,7 +29,9 @@ const RegisterPage = () => {
   return (
     <PageContainer>
       <Box minWidth="280px" display="flex" flexDirection="column" gridGap={4}>
-        <h3>Register, please</h3>
+        <Typography variant="h2" component="h2">
+          Register, please
+        </Typography>
 
         <Form autoComplete="on" noValidate onSubmit={handleSubmit(onSubmit)}>
           <TextField
@@ -47,11 +45,6 @@ const RegisterPage = () => {
                 value: true,
                 message: messages.isRequired,
               },
-              // pattern: {
-              //   value:
-              //     /^[a-zA-Zа-яА-Я]+(([' -][a - zA - Zа - яА - Я])?[a - zA - Zа - яА - Я]*) *$/,
-              //   message: messages.wrongInput,
-              // },
             })}
             error={!!errors.name}
             helperText={errors.name?.message}

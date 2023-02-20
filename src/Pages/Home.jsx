@@ -27,7 +27,7 @@ export const Home = () => {
         </Typography>
         <Typography variant="subtitle1" component="p" mb={4}>
           Registration and login forms with input error control. Check for the
-          same contact is enabled. Sort contacts option.
+          same contact is enabled. Sort contacts option. Funny avatars😃!
         </Typography>
         <Typography variant="h6" component="h3">
           Technologies:

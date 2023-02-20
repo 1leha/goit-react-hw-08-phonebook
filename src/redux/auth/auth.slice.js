@@ -41,7 +41,7 @@ const authSlice = createSlice({
       })
 
       // Refresh
-      .addCase(refresh.pending, (state, { payload }) => {
+      .addCase(refresh.pending, state => {
         state.isRefreshing = true;
       })
       .addCase(refresh.fulfilled, (state, { payload }) => {

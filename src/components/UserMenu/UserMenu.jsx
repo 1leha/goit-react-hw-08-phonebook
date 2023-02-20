@@ -1,6 +1,5 @@
 import { Button } from '@mui/material';
 import Avatar from 'components/Avatar';
-import { Box } from 'components/Box';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';

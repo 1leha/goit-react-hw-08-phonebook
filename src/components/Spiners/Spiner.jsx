@@ -1,6 +1,6 @@
 import { Box } from 'components/Box';
 import React from 'react';
-import { MutatingDots, Oval } from 'react-loader-spinner';
+import { Oval } from 'react-loader-spinner';
 
 export const FullscreenSpiner = () => {
   return (

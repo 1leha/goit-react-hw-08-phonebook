@@ -1,20 +1,16 @@
-import { Button, TextField } from '@mui/material';
+import { Button, TextField, Typography } from '@mui/material';
 import { Box } from 'components/Box';
-
 import React from 'react';
 import { useForm } from 'react-hook-form';
-
 import { messages } from 'components/settings/settings';
 import { PageContainer } from 'components/common/PageContainer';
 import Form from 'components/Form';
 import { login } from 'redux/auth/auth.operations';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectIsRefreshing } from 'redux/auth';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
   const dispatch = useDispatch();
-  const isRefreshing = useSelector(selectIsRefreshing);
   const navigate = useNavigate();
 
   const {
@@ -34,7 +30,9 @@ const LoginPage = () => {
   return (
     <PageContainer>
       <Box minWidth="280px" display="flex" flexDirection="column" gridGap={4}>
-        <h3>Login, please</h3>
+        <Typography variant="h2" component="h2">
+          Login, please
+        </Typography>
         <Form autoComplete="on" noValidate onSubmit={handleSubmit(onSubmit)}>
           <TextField
             required
